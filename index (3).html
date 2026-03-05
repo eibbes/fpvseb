@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FPV & Aerials by SEB — Industrial Drone Media · Houston, TX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080A08;--dark:#0E1110;--card:#121714;--border:#1E2420;
+  --accent:#C8F535;--white:#F0F4F0;--muted:#6B7A6B;
+  --fd:'Bebas Neue','Arial Narrow',Arial,sans-serif;
+  --fb:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --fm:'DM Mono','Courier New',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--fb);font-weight:300;line-height:1.6;overflow-x:hidden;cursor:none}
+#cur{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s;mix-blend-mode:exclusion;top:-20px;left:-20px}
+#cur-ring{width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.35;transition:width .2s,height .2s,opacity .2s;top:-20px;left:-20px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 48px;display:flex;justify-content:space-between;align-items:center;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(8,10,8,.96);backdrop-filter:blur(12px);border-color:var(--border)}
+
+.nav-logo{text-decoration:none;display:flex;align-items:center;gap:0}
+.nav-logo svg{height:42px;width:auto}
+.dot{width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block;animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.nav-links{display:flex;gap:36px;list-style:none;align-items:center}
+.nav-links a{font-family:var(--fm);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-cta{background:var(--accent)!important;color:var(--black)!important;padding:10px 22px;font-weight:500!important;border-radius:2px}
+.nav-cta:hover{background:#d8ff45!important}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 90px;position:relative;overflow:hidden}
+.hero-bg-layer{position:absolute;inset:0;z-index:0}
+/* Houston skyline SVG — always visible, no file dependency */
+.hero-bg-layer svg{width:100%;height:100%;object-fit:cover}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 50%,rgba(200,245,53,.06) 0%,transparent 60%),
+    linear-gradient(to bottom,rgba(8,10,8,.30) 0%,rgba(8,10,8,.55) 50%,rgba(8,10,8,1) 100%);
+}
+.hero-grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(200,245,53,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,245,53,.025) 1px,transparent 1px);background-size:80px 80px;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,black 30%,black 70%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0%,black 30%,black 70%,transparent 100%)}
+.hero-ticker{position:absolute;top:44%;left:0;right:0;overflow:hidden;pointer-events:none;opacity:.035;z-index:1}
+.hero-ticker-inner{display:flex;gap:60px;white-space:nowrap;animation:ticker 22s linear infinite;font-family:var(--fd);font-size:18vw;color:var(--white);letter-spacing:-.02em}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hero-tag{font-family:var(--fm);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:12px;animation:fadeUp .8s ease .2s both;position:relative;z-index:2}
+.hero-tag::before{content:'';display:block;width:36px;height:1px;background:var(--accent)}
+.hero-headline{font-family:var(--fd);font-size:clamp(4rem,10vw,10rem);line-height:.92;letter-spacing:.02em;max-width:900px;animation:fadeUp .8s ease .4s both;position:relative;z-index:2}
+.hero-headline .green{color:var(--accent)}
+.hero-headline .outline{-webkit-text-stroke:1px var(--white);color:transparent}
+.hero-sub{font-size:1rem;color:var(--muted);max-width:500px;margin-top:26px;line-height:1.75;animation:fadeUp .8s ease .6s both;position:relative;z-index:2}
+.hero-btns{display:flex;gap:18px;margin-top:42px;flex-wrap:wrap;animation:fadeUp .8s ease .8s both;position:relative;z-index:2}
+.btn-p{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--black);padding:15px 30px;font-family:var(--fm);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border-radius:2px;font-weight:400;transition:all .2s}
+.btn-p:hover{background:#d8ff45;transform:translateY(-2px);box-shadow:0 12px 40px rgba(200,245,53,.25)}
+.btn-s{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--white);padding:15px 30px;font-family:var(--fm);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border:1px solid var(--border);border-radius:2px;transition:all .2s}
+.btn-s:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.hero-stats{position:absolute;right:48px;bottom:90px;display:flex;flex-direction:column;gap:28px;text-align:right;animation:fadeLeft .8s ease 1s both;z-index:2}
+.stat-n{font-family:var(--fd);font-size:2.8rem;line-height:1}
+.stat-n span{color:var(--accent)}
+.stat-l{font-family:var(--fm);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;animation:fadeUp 1s ease 1.2s both;z-index:2}
+.scroll-hint span{font-family:var(--fm);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:1px;height:46px;background:linear-gradient(to bottom,var(--muted),transparent);animation:sdown 1.5s ease infinite}
+@keyframes sdown{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── SECTIONS ── */
+section{padding:110px 48px}
+.lbl{font-family:var(--fm);font-size:.66rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.lbl::before{content:'';display:block;width:22px;height:1px;background:var(--accent)}
+.sec-title{font-family:var(--fd);font-size:clamp(2.4rem,5vw,5rem);letter-spacing:.03em;line-height:1;margin-bottom:18px}
+.sec-body{color:var(--muted);font-size:.95rem;line-height:1.75;max-width:560px}
+
+/* ── SERVICES ── */
+.services{background:var(--dark)}
+.srv-hdr{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-bottom:70px;align-items:end}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.srv-card{background:var(--card);padding:40px 32px;position:relative;overflow:hidden;transition:background .3s}
+.srv-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.srv-card:hover{background:#141916}
+.srv-card:hover::after{transform:scaleX(1)}
+.srv-n{position:absolute;top:20px;right:20px;font-family:var(--fd);font-size:5rem;color:rgba(200,245,53,.04);line-height:1;pointer-events:none}
+.srv-icon{font-size:1.8rem;margin-bottom:20px;display:block}
+.srv-name{font-family:var(--fd);font-size:1.5rem;letter-spacing:.05em;margin-bottom:12px}
+.srv-desc{font-size:.85rem;color:var(--muted);line-height:1.7}
+.srv-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.srv-tag{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(200,245,53,.2);padding:3px 9px;border-radius:2px}
+
+/* ── WORK ── */
+.work-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:52px}
+.work-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.wc{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--card);border:1px solid var(--border);cursor:pointer}
+.wc.feat{grid-column:span 2;grid-row:span 1;aspect-ratio:16/9}
+.wc img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease,filter .3s;filter:brightness(.75) saturate(.9);display:block}
+.wc:hover img{transform:scale(1.05);filter:brightness(.45) saturate(.7)}
+.wc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,10,8,.88) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.wc-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.wc-title{font-family:var(--fd);font-size:1.25rem;letter-spacing:.05em}
+.wc-info{font-size:.78rem;color:var(--muted);margin-top:3px}
+.wc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:54px;height:54px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--black);font-size:1.1rem;transition:transform .3s;text-decoration:none}
+.wc:hover .wc-play{transform:translate(-50%,-50%) scale(1)}
+
+/* ── Instagram card ── */
+.wc-insta{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--card);border:1px solid var(--border);cursor:pointer;text-decoration:none;display:block;grid-column:span 2}
+.wc-insta img{width:100%;height:100%;object-fit:cover;filter:brightness(.78) saturate(.85);transition:transform .6s,filter .3s;display:block}
+.wc-insta:hover img{transform:scale(1.05);filter:brightness(.45) saturate(.65)}
+.wc-insta-pill{position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:7px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:6px 13px;font-family:var(--fm);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--white);transition:all .2s}
+.wc-insta:hover .wc-insta-pill{background:rgba(200,245,53,.15);border-color:rgba(200,245,53,.4);color:var(--accent)}
+.wc-insta-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,10,8,.92) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+/* White title override */
+.wc-insta-overlay .wc-title{color:#ffffff!important;font-family:var(--fd);font-size:1.25rem;letter-spacing:.05em}
+.wc-insta-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:54px;height:54px;background:linear-gradient(135deg,#833ab4,#fd1d1d 50%,#fcb045);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;transition:transform .3s}
+.wc-insta:hover .wc-insta-play{transform:translate(-50%,-50%) scale(1)}
+
+/* ── ABOUT ── */
+.about{background:var(--dark)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
+.about-frame{aspect-ratio:4/5;background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.about-frame::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,245,53,.07) 0%,transparent 60%);z-index:1;pointer-events:none}
+.about-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.82) saturate(.85)}
+.about-frame-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;width:100%;height:100%;background:linear-gradient(160deg,#0f1a10 0%,#080a08 100%);color:var(--muted);font-family:var(--fm);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase}
+.about-badge{position:absolute;bottom:-18px;right:-18px;background:var(--accent);color:var(--black);padding:20px 24px;font-family:var(--fd);font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.3;z-index:2}
+.about-badge strong{display:block;font-size:2.2rem}
+.about-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin:28px 0}
+.about-list li{display:flex;align-items:flex-start;gap:12px;font-size:.88rem;color:var(--muted)}
+.about-list li::before{content:'→';color:var(--accent);flex-shrink:0;margin-top:2px}
+.certs{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.cert{display:flex;align-items:center;gap:10px;border:1px solid var(--border);padding:11px 15px;border-radius:2px}
+.cert-txt{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;line-height:1.4}
+.cert-txt strong{color:var(--white);display:block}
+.cert-txt span{color:var(--muted)}
+
+/* ── PROCESS ── */
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);margin-top:70px}
+.proc-step{padding:44px 32px;border-right:1px solid var(--border);position:relative}
+.proc-step:last-child{border-right:none}
+.proc-n{font-family:var(--fd);font-size:5rem;color:rgba(200,245,53,.06);line-height:1;margin-bottom:-8px}
+.proc-name{font-family:var(--fd);font-size:1.35rem;letter-spacing:.05em;margin-bottom:10px}
+.proc-desc{font-size:.84rem;color:var(--muted);line-height:1.7}
+.proc-arrow{position:absolute;top:44px;right:-13px;width:26px;height:26px;background:var(--black);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--accent);z-index:2}
+.proc-step:last-child .proc-arrow{display:none}
+
+/* ── CLIENTS ── */
+.clients{background:var(--dark)}
+.clients-row{display:flex;border:1px solid var(--border);margin:52px 0;overflow:hidden}
+.cl{flex:1;padding:32px 20px;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background .2s}
+.cl:last-child{border-right:none}
+.cl:hover{background:var(--card)}
+.cl-name{font-family:var(--fd);font-size:1.1rem;letter-spacing:.1em;color:var(--muted);transition:color .2s}
+.cl:hover .cl-name{color:var(--white)}
+.cl-sub{font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--border);margin-top:5px;transition:color .2s}
+.cl:hover .cl-sub{color:var(--muted)}
+
+/* ── CTA ── */
+.cta-sec{text-align:center;position:relative;overflow:hidden;padding:150px 48px}
+.cta-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(200,245,53,.055) 0%,transparent 70%)}
+.cta-sec .lbl{justify-content:center}
+.cta-sec .lbl::before{display:none}
+.cta-title{font-family:var(--fd);font-size:clamp(3rem,8vw,8rem);line-height:.95;letter-spacing:.02em;margin-bottom:24px}
+.cta-sub{font-size:.95rem;color:var(--muted);max-width:440px;margin:0 auto 44px;line-height:1.75}
+.cta-btns{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.cta-contact{display:flex;gap:40px;justify-content:center;margin-top:56px;padding-top:56px;border-top:1px solid var(--border);flex-wrap:wrap}
+.ci-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.ci-val{font-size:.92rem;color:var(--white)}
+.ci-val a{color:inherit;text-decoration:none;transition:color .2s}
+.ci-val a:hover{color:var(--accent)}
+
+/* ── FOOTER ── */
+footer{padding:36px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--dark);flex-wrap:wrap;gap:16px}
+.f-logo svg{height:28px;width:auto;opacity:.5}
+.f-copy{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.f-links{display:flex;gap:24px;list-style:none}
+.f-links a{font-family:var(--fm);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.f-links a:hover{color:var(--accent)}
+
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  nav{padding:18px 22px}
+  .nav-links{display:none}
+  section{padding:72px 22px}
+  .hero{padding:0 22px 80px}
+  .hero-stats{display:none}
+  .srv-hdr{grid-template-columns:1fr;gap:20px}
+  .srv-grid{grid-template-columns:1fr}
+  .work-grid{grid-template-columns:1fr 1fr}
+  .wc.feat{grid-column:span 2}
+  .wc-insta{grid-column:span 2}
+  .about-grid{grid-template-columns:1fr}
+  .proc-grid{grid-template-columns:1fr 1fr}
+  .clients-row{flex-wrap:wrap}
+  .cl{flex:1 0 50%;border-bottom:1px solid var(--border)}
+  footer{flex-direction:column;text-align:center}
+  .cta-contact{flex-direction:column;gap:22px}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <!-- Inline SVG logo matching the FPV & AERIALS by SEB design -->
+    <svg viewBox="0 0 220 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Drone propeller / quad icon -->
+      <g transform="translate(0,2)">
+        <!-- Center hub -->
+        <circle cx="20" cy="20" r="3.5" fill="#C8F535"/>
+        <!-- Arms -->
+        <line x1="20" y1="20" x2="8" y2="8" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="32" y2="8" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="8" y2="32" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="32" y2="32" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Motor circles -->
+        <circle cx="8" cy="8" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <circle cx="32" cy="8" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <circle cx="8" cy="32" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <circle cx="32" cy="32" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <!-- Prop blades top-left -->
+        <ellipse cx="6" cy="5.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(-45 6 5.5)"/>
+        <ellipse cx="10" cy="10.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(-45 10 10.5)"/>
+        <!-- Prop blades top-right -->
+        <ellipse cx="34" cy="5.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(45 34 5.5)"/>
+        <ellipse cx="30" cy="10.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(45 30 10.5)"/>
+        <!-- Prop blades bottom-left -->
+        <ellipse cx="6" cy="34.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(45 6 34.5)"/>
+        <ellipse cx="10" cy="29.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(45 10 29.5)"/>
+        <!-- Prop blades bottom-right -->
+        <ellipse cx="34" cy="34.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(-45 34 34.5)"/>
+        <ellipse cx="30" cy="29.5" rx="4" ry="1.5" fill="#C8F535" opacity=".7" transform="rotate(-45 30 29.5)"/>
+      </g>
+      <!-- Wordmark -->
+      <text x="46" y="14" font-family="'DM Mono', monospace" font-size="7.5" letter-spacing="2.5" fill="#6B7A6B" text-anchor="start" font-weight="300">FPV &amp; AERIALS BY</text>
+      <text x="45" y="36" font-family="'Bebas Neue', 'Arial Narrow', Arial, sans-serif" font-size="26" letter-spacing="3" fill="#F0F4F0" text-anchor="start">SEB<tspan fill="#C8F535">.</tspan></text>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="home">
+  <!-- Houston skyline photo -->
+  <div class="hero-bg-layer" style="background:url('./skyline.jpg') center/cover no-repeat;">
+    <svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax slice" style="width:100%;height:100%;display:block;opacity:0">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#040906"/>
+          <stop offset="60%" stop-color="#071009"/>
+          <stop offset="100%" stop-color="#0a1a0b"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="75%" cy="45%" r="40%">
+          <stop offset="0%" stop-color="#C8F535" stop-opacity="0.06"/>
+          <stop offset="100%" stop-color="#C8F535" stop-opacity="0"/>
+        </radialGradient>
+        <!-- Stars filter -->
+      </defs>
+      <rect width="1440" height="900" fill="url(#skyGrad)"/>
+      <rect width="1440" height="900" fill="url(#glow)"/>
+      <!-- Stars -->
+      <g fill="#C8F535" opacity="0.35">
+        <circle cx="120" cy="80" r="1"/><circle cx="250" cy="60" r="0.8"/><circle cx="380" cy="120" r="1.2"/>
+        <circle cx="490" cy="45" r="0.7"/><circle cx="620" cy="90" r="1"/><circle cx="750" cy="55" r="0.9"/>
+        <circle cx="880" cy="75" r="1.1"/><circle cx="1010" cy="40" r="0.8"/><circle cx="1130" cy="100" r="1"/>
+        <circle cx="1280" cy="65" r="0.7"/><circle cx="200" cy="140" r="0.6"/><circle cx="440" cy="160" r="0.9"/>
+        <circle cx="700" cy="130" r="0.7"/><circle cx="960" cy="150" r="1"/><circle cx="1200" cy="120" r="0.8"/>
+        <circle cx="80" cy="200" r="0.5"/><circle cx="330" cy="180" r="0.7"/><circle cx="580" cy="195" r="0.6"/>
+        <circle cx="840" cy="170" r="0.8"/><circle cx="1100" cy="185" r="0.5"/><circle cx="1350" cy="160" r="0.7"/>
+      </g>
+      <!-- Houston skyline silhouette -->
+      <path fill="#0d1f0f" d="
+        M0,900 L0,580
+        L30,580 L30,540 L50,540 L50,500 L70,500 L70,460
+        L90,460 L90,380 L95,380 L95,340 L100,340 L100,300 L105,300 L105,260
+        L108,260 L108,220 L112,220 L112,180 L115,180 L115,160
+        L118,160 L118,140 L120,140 L120,120 L122,120 L122,140
+        L124,140 L124,160 L127,160 L127,180 L130,180 L130,220
+        L133,220 L133,260 L136,260 L136,300 L140,300 L140,340
+        L145,340 L145,380 L150,380 L150,420
+        L160,420 L160,380 L165,380 L165,350 L170,350 L170,320
+        L175,320 L175,295 L178,295 L178,270 L182,270 L182,295
+        L185,295 L185,320 L190,320 L190,350 L195,350 L195,380
+        L200,380 L200,420
+        L220,420 L220,380 L225,380 L225,340 L230,340 L230,310
+        L235,310 L235,280 L240,280 L240,260 L242,260 L242,240
+        L245,240 L245,215 L248,215 L248,195 L250,195 L250,175
+        L252,175 L252,155 L255,155 L255,135 L257,135 L257,115
+        L260,115 L260,95 L262,95 L262,75 L265,75 L265,55
+        L267,55 L267,35 L270,35 L270,20 L272,20 L272,35
+        L275,35 L275,55 L277,55 L277,75 L280,75 L280,95
+        L282,95 L282,115 L285,115 L285,135 L287,135 L287,155
+        L290,155 L290,175 L292,175 L292,195 L295,195 L295,215
+        L298,215 L298,240 L300,240 L300,260 L302,260 L302,280
+        L305,280 L305,310 L310,310 L310,340 L315,340 L315,380
+        L320,380 L320,420
+        L340,420 L340,400 L355,400 L355,370 L360,370 L360,340
+        L365,340 L365,310 L370,310 L370,285 L374,285 L374,260
+        L377,260 L377,240 L380,240 L380,220 L382,220 L382,200
+        L385,200 L385,185 L387,185 L387,200 L390,200 L390,220
+        L392,220 L392,240 L395,240 L395,260 L398,260 L398,285
+        L402,285 L402,310 L407,310 L407,340 L412,340 L412,370
+        L417,370 L417,400 L430,400 L430,420
+        L445,420 L445,390 L455,390 L455,360 L460,360 L460,330
+        L465,330 L465,305 L470,305 L470,280 L475,280 L475,255
+        L478,255 L478,230 L482,230 L482,205 L486,205 L486,185
+        L490,185 L490,170 L493,170 L493,155 L495,155 L495,140
+        L498,140 L498,125 L500,125 L500,110 L502,110 L502,125
+        L504,125 L504,140 L507,140 L507,155 L509,155 L509,170
+        L512,170 L512,185 L516,185 L516,205 L520,205 L520,230
+        L524,230 L524,255 L527,255 L527,280 L532,280 L532,305
+        L537,305 L537,330 L542,330 L542,360 L547,360 L547,390
+        L555,390 L555,420
+        L570,420 L570,400 L580,400 L580,370 L585,370 L585,345
+        L590,345 L590,320 L595,320 L595,298 L600,298 L600,278
+        L605,278 L605,260 L608,260 L608,242 L612,242 L612,225
+        L615,225 L615,208 L618,208 L618,193 L620,193 L620,180
+        L622,180 L622,165 L625,165 L625,152 L627,152 L627,140
+        L630,140 L630,128 L632,128 L632,115 L634,115 L634,100
+        L637,100 L637,85 L640,85 L640,70 L643,70 L643,55
+        L645,55 L645,40 L647,40 L647,25 L650,25 L650,15
+        L652,15 L652,25 L655,25 L655,40 L657,40 L657,55
+        L660,55 L660,70 L663,70 L663,85 L666,85 L666,100
+        L669,100 L669,115 L671,115 L671,128 L673,128 L673,140
+        L676,140 L676,152 L678,152 L678,165 L681,165 L681,180
+        L683,180 L683,193 L686,193 L686,208 L689,208 L689,225
+        L692,225 L692,242 L696,242 L696,260 L699,260 L699,278
+        L704,278 L704,298 L709,298 L709,320 L714,320 L714,345
+        L719,345 L719,370 L724,370 L724,400 L734,400 L734,420
+        L755,420 L755,395 L765,395 L765,368 L770,368 L770,342
+        L776,342 L776,318 L782,318 L782,295 L788,295 L788,273
+        L794,273 L794,252 L800,252 L800,232 L805,232 L805,214
+        L810,214 L810,197 L815,197 L815,180 L820,180 L820,165
+        L825,165 L825,150 L828,150 L828,136 L831,136 L831,122
+        L834,122 L834,108 L837,108 L837,95 L840,95 L840,82
+        L843,82 L843,70 L846,70 L846,58 L849,58 L849,47
+        L852,47 L852,37 L854,37 L854,28 L857,28 L857,37
+        L860,37 L860,47 L863,47 L863,58 L866,58 L866,70
+        L869,70 L869,82 L872,82 L872,95 L875,95 L875,108
+        L878,108 L878,122 L881,122 L881,136 L884,136 L884,150
+        L887,150 L887,165 L892,165 L892,180 L897,180 L897,197
+        L902,197 L902,214 L907,214 L907,232 L912,232 L912,252
+        L918,252 L918,273 L924,273 L924,295 L930,295 L930,318
+        L936,318 L936,342 L942,342 L942,368 L947,368 L947,395
+        L957,395 L957,420
+        L975,420 L975,400 L985,400 L985,375 L990,375 L990,350
+        L996,350 L996,328 L1002,328 L1002,308 L1007,308 L1007,290
+        L1012,290 L1012,272 L1017,272 L1017,255 L1021,255 L1021,238
+        L1025,238 L1025,222 L1028,222 L1028,207 L1031,207 L1031,193
+        L1034,193 L1034,180 L1037,180 L1037,168 L1040,168 L1040,156
+        L1043,156 L1043,145 L1046,145 L1046,135 L1049,135 L1049,125
+        L1052,125 L1052,135 L1055,135 L1055,145 L1058,145 L1058,156
+        L1061,156 L1061,168 L1064,168 L1064,180 L1067,180 L1067,193
+        L1070,193 L1070,207 L1073,207 L1073,222 L1077,222 L1077,238
+        L1081,238 L1081,255 L1085,255 L1085,272 L1090,272 L1090,290
+        L1095,290 L1095,308 L1100,308 L1100,328 L1106,328 L1106,350
+        L1112,350 L1112,375 L1117,375 L1117,400 L1127,400 L1127,420
+        L1145,420 L1145,400 L1158,400 L1158,375 L1165,375 L1165,350
+        L1172,350 L1172,328 L1178,328 L1178,308 L1184,308 L1184,290
+        L1190,290 L1190,420
+        L1210,420 L1210,460 L1230,460 L1230,500 L1260,500 L1260,540
+        L1300,540 L1300,560 L1340,560 L1340,580 L1380,580 L1380,600
+        L1440,600 L1440,900 Z
+      "/>
+      <!-- Lit windows (small dots scattered across buildings) -->
+      <g fill="#C8F535" opacity="0.2">
+        <rect x="263" y="80" width="2" height="3"/><rect x="268" y="80" width="2" height="3"/>
+        <rect x="263" y="90" width="2" height="3"/><rect x="271" y="95" width="2" height="3"/>
+        <rect x="648" y="30" width="2" height="3"/><rect x="653" y="40" width="2" height="3"/>
+        <rect x="643" y="45" width="2" height="3"/><rect x="657" y="30" width="2" height="3"/>
+        <rect x="853" y="42" width="2" height="3"/><rect x="858" y="52" width="2" height="3"/>
+        <rect x="848" y="55" width="2" height="3"/><rect x="863" y="42" width="2" height="3"/>
+        <rect x="1050" y="130" width="2" height="3"/><rect x="1055" y="140" width="2" height="3"/>
+        <rect x="1045" y="145" width="2" height="3"/>
+        <rect x="122" y="130" width="2" height="3"/><rect x="117" y="145" width="2" height="3"/>
+        <rect x="499" y="120" width="2" height="3"/><rect x="504" y="130" width="2" height="3"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-ticker" aria-hidden="true">
+    <div class="hero-ticker-inner">
+      <span>FPV&nbsp;&nbsp;&nbsp;</span><span>DRONE&nbsp;&nbsp;&nbsp;</span><span>MEDIA&nbsp;&nbsp;&nbsp;</span><span>HOUSTON&nbsp;&nbsp;&nbsp;</span>
+      <span>FPV&nbsp;&nbsp;&nbsp;</span><span>DRONE&nbsp;&nbsp;&nbsp;</span><span>MEDIA&nbsp;&nbsp;&nbsp;</span><span>HOUSTON&nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+  <div class="hero-tag">Houston, TX &nbsp;·&nbsp; Industrial Drone Media</div>
+  <h1 class="hero-headline">SEE YOUR<br><span class="green">FACILITY</span><br><span class="outline">DIFFERENTLY</span></h1>
+  <p class="hero-sub">Cinematic FPV drone media for industrial and commercial companies in Houston. Facility tours, construction documentation, and aerial photography that works for your business.</p>
+  <div class="hero-btns">
+    <a href="#contact" class="btn-p">✦ Request a Quote</a>
+    <a href="#work" class="btn-s">↓ View My Work</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-n">107<span>+</span></div><div class="stat-l">FAA Certified</div></div>
+    <div><div class="stat-n">20<span>+</span></div><div class="stat-l">Projects Delivered</div></div>
+    <div><div class="stat-n">4<span>K</span></div><div class="stat-l">Resolution Output</div></div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section class="services" id="services">
+  <div class="srv-hdr">
+    <div>
+      <div class="lbl rv">What I Do</div>
+      <h2 class="sec-title rv">Industrial<br>Drone Media</h2>
+    </div>
+    <p class="sec-body rv">Every shot is planned with purpose — from cinematic flythroughs of your facility to sweeping aerial views of your construction site. Footage that works commercially.</p>
+  </div>
+  <div class="srv-grid rv">
+    <div class="srv-card"><div class="srv-n">01</div><span class="srv-icon">🏭</span><div class="srv-name">Facility Tours</div><p class="srv-desc">Immersive FPV walkthroughs of warehouses, factories, and industrial spaces. Show clients the scale of your operation like never before.</p><div class="srv-tags"><span class="srv-tag">FPV Drone</span><span class="srv-tag">4K Video</span><span class="srv-tag">Color Graded</span></div></div>
+    <div class="srv-card"><div class="srv-n">02</div><span class="srv-icon">🏗️</span><div class="srv-name">Construction Progress</div><p class="srv-desc">Document every phase from groundbreak to completion. Aerial documentation for project records, marketing, and stakeholder reports.</p><div class="srv-tags"><span class="srv-tag">Recurring</span><span class="srv-tag">Aerial</span><span class="srv-tag">Timelapse</span></div></div>
+    <div class="srv-card"><div class="srv-n">03</div><span class="srv-icon">📷</span><div class="srv-name">Aerial Photography</div><p class="srv-desc">High-resolution still photography from the air. Perfect for marketing materials, real estate, site surveys, and executive presentations.</p><div class="srv-tags"><span class="srv-tag">Hi-Res</span><span class="srv-tag">RAW Delivery</span><span class="srv-tag">Edited</span></div></div>
+    <div class="srv-card"><div class="srv-n">04</div><span class="srv-icon">🎬</span><div class="srv-name">Commercial Media</div><p class="srv-desc">Marketing-ready video packages for brands and businesses. Cinematic storytelling that elevates your company across social, websites, and pitches.</p><div class="srv-tags"><span class="srv-tag">Brand Video</span><span class="srv-tag">Social Cut</span><span class="srv-tag">Full Edit</span></div></div>
+    <div class="srv-card"><div class="srv-n">05</div><span class="srv-icon">🏋️</span><div class="srv-name">Gym &amp; Venue Tours</div><p class="srv-desc">Dynamic FPV flythroughs of gyms, sports venues, and entertainment spaces. Let the footage sell the experience before a client walks in.</p><div class="srv-tags"><span class="srv-tag">Indoor FPV</span><span class="srv-tag">High Energy</span><span class="srv-tag">Fast Edit</span></div></div>
+    <div class="srv-card"><div class="srv-n">06</div><span class="srv-icon">⚙️</span><div class="srv-name">Custom Projects</div><p class="srv-desc">Have a unique vision? From events to specialized industrial documentation, I work with you to build the right shot list and deliver.</p><div class="srv-tags"><span class="srv-tag">Bespoke</span><span class="srv-tag">Consultation</span><span class="srv-tag">Any Scale</span></div></div>
+  </div>
+</section>
+
+<!-- ═══ WORK ═══ -->
+<section id="work" style="background:var(--black)">
+  <div class="work-hdr">
+    <div>
+      <div class="lbl rv">Portfolio</div>
+      <h2 class="sec-title rv">Featured Work</h2>
+    </div>
+    <a href="mailto:work@sebastian-nguyen.com" class="btn-s rv">Request My Reel →</a>
+  </div>
+  <div class="work-grid rv">
+    <!-- Volta W — YouTube, featured -->
+    <div class="wc feat">
+      <img src="https://i.ytimg.com/vi/5LP97HUhNms/maxresdefault.jpg" alt="Volta W Industries FPV Tour" onerror="this.style.display='none'">
+      <div class="wc-overlay">
+        <div class="wc-lbl">Facility Tour · Houston, TX</div>
+        <div class="wc-title">Volta W Industries</div>
+        <div class="wc-info">Industrial FPV facility flythrough</div>
+      </div>
+      <a href="https://www.youtube.com/watch?v=5LP97HUhNms" target="_blank" rel="noopener" class="wc-play">▶</a>
+    </div>
+    <!-- Spitzer — YouTube -->
+    <div class="wc">
+      <img src="https://i.ytimg.com/vi/sTMjWPKzk6k/maxresdefault.jpg" alt="Spitzer Industries FPV Tour" onerror="this.style.display='none'">
+      <div class="wc-overlay">
+        <div class="wc-lbl">Facility Tour · Houston, TX</div>
+        <div class="wc-title">Spitzer Industries</div>
+        <div class="wc-info">Industrial manufacturing tour</div>
+      </div>
+      <a href="https://www.youtube.com/watch?v=sTMjWPKzk6k" target="_blank" rel="noopener" class="wc-play">▶</a>
+    </div>
+    <!-- Momentum Climbing — Instagram, embedded photo -->
+    <a href="https://www.instagram.com/reel/DP4EPRFkWQd/" target="_blank" rel="noopener" class="wc-insta">
+      <img src="data:image/jpeg;base64,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" alt="Momentum Indoor Climbing FPV Tour">
+      <div class="wc-insta-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram Reel
+      </div>
+      <div class="wc-insta-overlay">
+        <div class="wc-lbl">Venue Tour · Houston, TX</div>
+        <div class="wc-title" style="color:#ffffff">Momentum Indoor Climbing</div>
+        <div class="wc-info">FPV gym showcase — view on Instagram</div>
+      </div>
+      <div class="wc-insta-play">▶</div>
+    </a>
+    <!-- Construction Progress -->
+    <div class="wc">
+      <img src="construction.jpg" alt="Construction progress with Houston skyline" onerror="this.style.display='none'">
+      <div class="wc-overlay">
+        <div class="wc-lbl">Construction · Houston, TX</div>
+        <div class="wc-title">Construction Progress</div>
+        <div class="wc-info">Aerial documentation — downtown backdrop</div>
+      </div>
+    </div>
+    <!-- Commercial Building Aerial -->
+    <div class="wc">
+      <img src="commercial.jpg" alt="Commercial building aerial photography Houston" onerror="this.style.display='none'">
+      <div class="wc-overlay">
+        <div class="wc-lbl">Aerial Photography · Houston, TX</div>
+        <div class="wc-title">Commercial Building</div>
+        <div class="wc-info">Hi-res aerial stills for real estate</div>
+      </div>
+    </div>
+    <!-- Residential Aerial -->
+    <div class="wc">
+      <img src="house.jpg" alt="Residential aerial photography Houston" onerror="this.style.display='none'">
+      <div class="wc-overlay">
+        <div class="wc-lbl">Aerial Photography · The Woodlands, TX</div>
+        <div class="wc-title">Residential Aerial</div>
+        <div class="wc-info">Property photography from above</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="rv" style="position:relative">
+      <div class="about-frame">
+        <img src="./portrait.jpg" alt="Sebastian Nguyen FPV Pilot" id="portrait-img"
+          onerror="this.style.display='none';document.getElementById('portrait-fallback').style.display='flex'">
+        <div class="about-frame-placeholder" id="portrait-fallback" style="display:none">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#C8F535" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span>portrait.jpg</span>
+        </div>
+      </div>
+      <div class="about-badge"><strong>107</strong>FAA Part<br>Certified</div>
+    </div>
+    <div class="rv">
+      <div class="lbl">The Pilot</div>
+      <h2 class="sec-title">Houston's Industrial<br>FPV Specialist</h2>
+      <p class="sec-body" style="max-width:100%;margin-bottom:0">I'm Seb — a Houston-based FPV drone operator focused on industrial and commercial clients. I specialize in footage that's not just beautiful, but useful: media that supports your sales, documentation, and marketing efforts.</p>
+      <ul class="about-list">
+        <li>Experienced flying in tight industrial environments, warehouses, and indoor venues</li>
+        <li>Fully insured for commercial operations — zero liability for your business</li>
+        <li>Houston-based, available across the greater Gulf Coast region</li>
+        <li>Turnkey production: shoot, edit, and delivery in a single workflow</li>
+        <li>Fast turnaround — raw footage and final edits within agreed timelines</li>
+      </ul>
+      <div class="certs">
+        <div class="cert"><span style="font-size:1.2rem">✈️</span><div class="cert-txt"><strong>FAA Part 107</strong><span>Certified Pilot</span></div></div>
+        <div class="cert"><span style="font-size:1.2rem">🛡️</span><div class="cert-txt"><strong>Fully Insured</strong><span>Commercial Ops</span></div></div>
+        <div class="cert"><span style="font-size:1.2rem">📍</span><div class="cert-txt"><strong>Houston, TX</strong><span>Local &amp; Available</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROCESS ═══ -->
+<section id="process" style="background:var(--black)">
+  <div class="lbl rv">How It Works</div>
+  <h2 class="sec-title rv">From Brief to Delivery</h2>
+  <p class="sec-body rv">A streamlined process built for busy industrial companies — no confusion, no surprises, just great footage.</p>
+  <div class="proc-grid rv">
+    <div class="proc-step"><div class="proc-n">01</div><div class="proc-name">Consultation</div><p class="proc-desc">We talk through your goals, location, and timeline. I'll advise on shot types and deliverables that make sense for your use case.</p><div class="proc-arrow">→</div></div>
+    <div class="proc-step"><div class="proc-n">02</div><div class="proc-name">Shot Planning</div><p class="proc-desc">I scout the location, build a detailed shot list, handle airspace authorizations, and confirm safety protocols with your team.</p><div class="proc-arrow">→</div></div>
+    <div class="proc-step"><div class="proc-n">03</div><div class="proc-name">Shoot Day</div><p class="proc-desc">Professional, efficient on-site operations. I work around your schedule and minimize disruption to normal business activity.</p><div class="proc-arrow">→</div></div>
+    <div class="proc-step"><div class="proc-n">04</div><div class="proc-name">Delivery</div><p class="proc-desc">Color-graded, edited video and/or hi-res stills delivered digitally. Revisions included. Ready to use immediately.</p></div>
+  </div>
+</section>
+
+<!-- ═══ CLIENTS ═══ -->
+<section class="clients">
+  <div class="lbl rv">Clients &amp; Projects</div>
+  <h2 class="sec-title rv">Trusted by Houston Businesses</h2>
+  <div class="clients-row rv">
+    <div class="cl"><div class="cl-name">Volta W Industries</div><div class="cl-sub">Industrial Manufacturing</div></div>
+    <div class="cl"><div class="cl-name">Spitzer Industries</div><div class="cl-sub">Industrial Equipment</div></div>
+    <div class="cl"><div class="cl-name">Momentum</div><div class="cl-sub">Indoor Climbing Gym</div></div>
+    <div class="cl"><div class="cl-name">Your Company</div><div class="cl-sub">Next Project →</div></div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-sec" id="contact">
+  <div class="cta-bg"></div>
+  <div class="lbl rv">Get Started</div>
+  <h2 class="cta-title rv">Ready to Shoot<br><span style="color:var(--accent)">Something Big?</span></h2>
+  <p class="cta-sub rv">Based in Houston. Serving industrial and commercial clients across the Gulf Coast. Let's talk about your project.</p>
+  <div class="cta-btns rv">
+    <a href="mailto:work@sebastian-nguyen.com" class="btn-p">✦ Request a Quote</a>
+    <a href="tel:3463294679" class="btn-s">📞 (346) 329-4679</a>
+  </div>
+  <div class="cta-contact rv">
+    <div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:work@sebastian-nguyen.com">work@sebastian-nguyen.com</a></div></div>
+    <div><div class="ci-lbl">Phone</div><div class="ci-val"><a href="tel:3463294679">(346) 329-4679</a></div></div>
+    <div><div class="ci-lbl">Location</div><div class="ci-val">Houston, TX</div></div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="f-logo">
+    <svg viewBox="0 0 220 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(0,2)">
+        <circle cx="20" cy="20" r="3.5" fill="#C8F535"/>
+        <line x1="20" y1="20" x2="8" y2="8" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="32" y2="8" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="8" y2="32" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="32" y2="32" stroke="#C8F535" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="8" cy="8" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <circle cx="32" cy="8" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <circle cx="8" cy="32" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+        <circle cx="32" cy="32" r="4.5" stroke="#C8F535" stroke-width="1.3" fill="none"/>
+      </g>
+      <text x="46" y="14" font-family="'DM Mono', monospace" font-size="7.5" letter-spacing="2.5" fill="#6B7A6B" text-anchor="start" font-weight="300">FPV &amp; AERIALS BY</text>
+      <text x="45" y="36" font-family="'Bebas Neue', 'Arial Narrow', Arial, sans-serif" font-size="26" letter-spacing="3" fill="#F0F4F0" text-anchor="start">SEB<tspan fill="#C8F535">.</tspan></text>
+    </svg>
+  </div>
+  <div class="f-copy">© 2025 FPV &amp; Aerials by SEB · Houston, TX · FAA Part 107 Certified</div>
+  <ul class="f-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+// Cursor
+var cur=document.getElementById('cur'),ring=document.getElementById('cur-ring'),mx=-100,my=-100,rx=-100,ry=-100;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.width='18px';cur.style.height='18px';ring.style.width='50px';ring.style.height='50px';ring.style.opacity='0.65';});
+  el.addEventListener('mouseleave',function(){cur.style.width='10px';cur.style.height='10px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.35';});
+});
+// Nav
+var nav=document.getElementById('nav');
+window.addEventListener('scroll',function(){nav.classList[window.scrollY>50?'add':'remove']('scrolled');});
+// Reveal
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e,i){if(e.isIntersecting)setTimeout(function(){e.target.classList.add('on');},i*70);});},{threshold:0.1});
+document.querySelectorAll('.rv').forEach(function(el){obs.observe(el);});
+</script>
+</body>
+</html>
