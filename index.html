@@ -39,6 +39,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:4px 52px;display:fle
 nav.scrolled{background:rgba(6,6,10,.95);backdrop-filter:blur(16px);border-color:var(--border)}
 .nav-logo{text-decoration:none;display:flex;align-items:center;gap:0;background:transparent!important}
 .nav-logo svg{height:80px;width:auto;background:transparent!important}
+.nav-logo img{
+  height:50px;           /* final visible height — adjust to taste */
+  width:auto;
+  object-fit:cover;
+  object-position:center; /* keeps it horizontally centered */
+  clip-path:inset(12% 0 12% 0); /* crops top 12% and bottom 12% — tweak these % values */
+  display:block;
+}
 .dot{width:5px;height:5px;background:var(--accent);border-radius:50%;display:inline-block;animation:blink 2.2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
 .nav-links{display:flex;gap:40px;list-style:none;align-items:center}
