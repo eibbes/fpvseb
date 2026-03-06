@@ -554,6 +554,15 @@ if('IntersectionObserver' in window){
   // Fallback: show all elements immediately
   revEls.forEach(function(el){ el.classList.add('on'); });
 }
+// Force autoplay on mobile
+var vid = document.querySelector('.hero-bg-layer');
+if(vid){
+  vid.play().catch(function(){
+    document.addEventListener('touchstart', function(){
+      vid.play();
+    }, {once: true});
+  });
+}
 </script>
 </body>
 </html>
