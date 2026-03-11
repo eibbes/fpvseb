@@ -109,6 +109,31 @@ nav.scrolled{background:rgba(6,6,10,.95);backdrop-filter:blur(16px);border-color
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeLeft{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 
+  /* SHowReel */
+.showreel{
+  padding:120px 32px;
+  background:var(--dark);
+}
+
+.showreel-video{
+  position:relative;
+  width:100%;
+  max-width:1200px;
+  margin:auto;
+  padding-top:56.25%;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.showreel-video iframe{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+  
 /* SECTIONS */
 section{padding:116px 52px}
 .lbl{font-family:var(--fm);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
@@ -362,7 +387,30 @@ footer{padding:38px 52px;border-top:1px solid var(--border);display:flex;justify
   </div>
   <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
+  
+<!-- ShowReel -->
+<section class="showreel">
+  <div class="wrap">
 
+    <div class="sec-head">
+      <div class="sec-eyebrow">Featured</div>
+      <h2 class="sec-title">FPV Showreel</h2>
+      <p class="sec-sub">Industrial · Real Estate · Recreation · Sports · Cinematic FPV</p>
+    </div>
+
+    <div class="showreel-video">
+      <iframe 
+        src="https://www.youtube.com/embed/KeYMZbjksSk"
+        title="SEB FPV Showreel"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+  </div>
+</section>
+  
 <!-- SERVICES -->
 <section class="services" id="services">
   <div class="srv-hdr">
